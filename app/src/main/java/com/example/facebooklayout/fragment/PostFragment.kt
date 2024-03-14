@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.facebooklayout.Adapter.DetailAdapter
-import com.example.facebooklayout.ViewModel.MainViewModel
 import com.example.facebooklayout.databinding.FragmentPostBinding
+import com.example.facebooklayout.vm.MainViewModel
 
 class PostFragment : Fragment() {
     private lateinit var binding: FragmentPostBinding
@@ -24,15 +24,13 @@ class PostFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val detailAdapter by lazy { DetailAdapter(mainViewModel.loadData()) }
+        val detailAdapter by lazy { DetailAdapter(mainViewModel.detailItems) }
+
+
         binding.profileDetail.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = detailAdapter
-//            layoutManager = LinearLayoutManager(
-//                this@PostFragment,
-//                LinearLayoutManager.VERTICAL,
-//                false
-//            )
+
         }
     }
 }

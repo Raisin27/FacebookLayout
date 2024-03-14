@@ -10,29 +10,46 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.ViewModelProvider
+import com.example.facebooklayout.Repository.MainRepository
+
 import com.example.facebooklayout.databinding.ActivityMainBinding
 import com.example.facebooklayout.fragment.PhotoFragment
 import com.example.facebooklayout.fragment.PostFragment
 import com.example.facebooklayout.fragment.ReelFragment
+import com.example.facebooklayout.vm.MainViewModel
+import com.example.facebooklayout.vm.ViewModelFactory
 
 class MainActivity : AppCompatActivity() {
     lateinit var avatar : ImageView
     lateinit var username : TextView
     lateinit var bgImage : ImageView
-    lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var mainViewModel: MainViewModel
 
     private lateinit var sharedPreferences: SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+//        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+//        setContentView(binding.root)
 
-        binding.apply {
+        //Database
+        val factory = ViewModelFactory(MainRepository())
 
-        }
+
+        mainViewModel = ViewModelProvider(this, factory)
+            .get(MainViewModel::class.java)
+        binding.detailData = mainViewModel
+
+        binding.lifecycleOwner = this
+
+
+
 
 
         sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
