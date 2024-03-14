@@ -10,18 +10,19 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import com.example.facebooklayout.Repository.MainRepository
-
 import com.example.facebooklayout.databinding.ActivityMainBinding
 import com.example.facebooklayout.fragment.PhotoFragment
 import com.example.facebooklayout.fragment.PostFragment
 import com.example.facebooklayout.fragment.ReelFragment
 import com.example.facebooklayout.vm.MainViewModel
 import com.example.facebooklayout.vm.ViewModelFactory
+import kotlinx.coroutines.coroutineScope
 
 class MainActivity : AppCompatActivity() {
     lateinit var avatar : ImageView
@@ -42,25 +43,35 @@ class MainActivity : AppCompatActivity() {
         val factory = ViewModelFactory(MainRepository())
 
 
-        mainViewModel = ViewModelProvider(this, factory)
-            .get(MainViewModel::class.java)
+        mainViewModel = ViewModelProvider(this, factory).get(MainViewModel::class.java)
         binding.detailData = mainViewModel
 
         binding.lifecycleOwner = this
 
+        mainViewModel.name.observe(this,{newName->
+            binding.userName2.text = newName
+            binding.userName1.text = newName
+        })
 
+        mainViewModel.avatar.observe(this, {resourceId->
+            binding.avatar.setImageResource(resourceId)
+        })
 
+        mainViewModel.bg.observe(this, {resourceId->
+            binding.backgroundImage.setImageResource(resourceId)
+        })
 
 
         sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+
         avatar = findViewById(R.id.avatar)
-        username = findViewById(R.id.userName2)
+//        username = findViewById(R.id.userName2)
         bgImage = findViewById(R.id.backgroundImage)
 
-        // SharedPreferences에서 name 값을 불러와서 TextView에 설정
-        val name = sharedPreferences.getString("name", "Mark")
-
-        username.text = name
+//        // SharedPreferences에서 name 값을 불러와서 TextView에 설정
+//        val name = sharedPreferences.getString("name", "Mark")
+//
+//        username.text = name
         avatar.setOnClickListener{
             val explicitIntent = Intent(this, AvatarActivity::class.java)
             // Lấy tên người dùng từ TextView
@@ -132,20 +143,20 @@ class MainActivity : AppCompatActivity() {
             loadFragment(reelFragment)
         }
         // userName2를 클릭하고 새로운 값을 입력하면 그 값이 변경되도록 코드를 추가합니다.
-        username.setOnClickListener {
+        binding.userName2.setOnClickListener {
             val dialog = AlertDialog.Builder(this)
             val editText = EditText(this)
             dialog.setView(editText)
-            dialog.setPositiveButton("OK") { _, _ ->
-                val newName = editText.text.toString()
-                username.text = newName
-                // 새로운 이름을 SharedPreferences에 저장합니다.
-                sharedPreferences.edit().putString("name", newName).apply()
-            }
-            dialog.setNegativeButton("Cancel") { dialogInterface, _ ->
-                dialogInterface.dismiss()
-            }
-            dialog.show()
+//            dialog.setPositiveButton("OK") { _, _ ->
+//                val newName = editText.text.toString()
+//                username.text = newName
+//                // 새로운 이름을 SharedPreferences에 저장합니다.
+//                sharedPreferences.edit().putString("name", newName).apply()
+//            }
+//            dialog.setNegativeButton("Cancel") { dialogInterface, _ ->
+//                dialogInterface.dismiss()
+//            }
+//            dialog.show()
         }
     }
     fun loadFragment(fragment: Fragment){
@@ -155,4 +166,6 @@ class MainActivity : AppCompatActivity() {
         fragmentTransaction.replace(R.id.details, fragment)
         fragmentTransaction.commit()
     }
+
+
 }

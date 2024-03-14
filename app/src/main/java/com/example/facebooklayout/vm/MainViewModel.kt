@@ -19,11 +19,17 @@ class MainViewModel(val repository: MainRepository): ViewModel(), Observable{
     var caption = MutableLiveData<String?>()
 
     @Bindable
-    var avatar = MutableLiveData<Int?>()
+    var avatar = MutableLiveData<Int>()
+
+    fun updateResourceId(resourceId: Int){
+        avatar.value = resourceId
+    }
 
     @Bindable
-    var bg = MutableLiveData<Int?>()
-
+    var bg = MutableLiveData<Int>()
+    fun updateBgResourceId(resourceId: Int){
+        bg.value = resourceId
+    }
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
 
     }

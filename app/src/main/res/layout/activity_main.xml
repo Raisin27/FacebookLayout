@@ -65,7 +65,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="12"
-                    android:text="@={detailData.name}"
+                    android:text="@{detailData.name}"
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -104,7 +104,7 @@
                         android:id="@+id/backgroundImage"
                         android:layout_width="match_parent"
                         android:layout_height="190dp"
-                        android:src="@drawable/earth" />
+                        app:imageResource="@{detailData.bg}" />
 
                     <LinearLayout
                         android:id="@+id/llv_Avatar"
@@ -131,7 +131,7 @@
                                 android:id="@+id/avatar"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:src="@drawable/markzuckerbergavatar" />
+                                app:imageResource="@{detailData.avatar}" />
 
                         </androidx.cardview.widget.CardView>
 
@@ -168,7 +168,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="13"
-                        android:text="@={detailData.name}"
+                        android:text="@{detailData.name}"
                         android:textColor="@color/textWhite"
                         android:textSize="24sp"
                         android:textStyle="bold"
