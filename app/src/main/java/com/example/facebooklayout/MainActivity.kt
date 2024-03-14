@@ -13,18 +13,38 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import com.example.facebooklayout.Adapter.DetailAdapter
+import com.example.facebooklayout.ViewModel.MainViewModel
+import com.example.facebooklayout.databinding.ActivityMainBinding
+
 class MainActivity : AppCompatActivity() {
     lateinit var avatar : ImageView
     lateinit var username : TextView
     lateinit var bgImage : ImageView
+    lateinit var binding: ActivityMainBinding
+    private val mainViewModel: MainViewModel by viewModels()
+
     private lateinit var sharedPreferences: SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        binding.apply {
+            val detailAdapter by lazy { DetailAdapter(mainViewModel.loadData()) }
+
+                {
+
+                }
+
+        }
+
         sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
         avatar = findViewById(R.id.avatar)
         username = findViewById(R.id.userName2)
         bgImage = findViewById(R.id.backgroundImage)
+
         // SharedPreferences에서 name 값을 불러와서 TextView에 설정
         val name = sharedPreferences.getString("name", "Mark")
 
