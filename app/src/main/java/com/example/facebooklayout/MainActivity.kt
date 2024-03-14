@@ -1,6 +1,5 @@
 package com.example.facebooklayout
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -13,16 +12,16 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import com.example.facebooklayout.Adapter.DetailAdapter
-import com.example.facebooklayout.ViewModel.MainViewModel
 import com.example.facebooklayout.databinding.ActivityMainBinding
+import com.example.facebooklayout.fragment.PhotoFragment
+import com.example.facebooklayout.fragment.PostFragment
+import com.example.facebooklayout.fragment.ReelFragment
 
 class MainActivity : AppCompatActivity() {
     lateinit var avatar : ImageView
     lateinit var username : TextView
     lateinit var bgImage : ImageView
     lateinit var binding: ActivityMainBinding
-    private val mainViewModel: MainViewModel by viewModels()
 
     private lateinit var sharedPreferences: SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,13 +31,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.apply {
-            val detailAdapter by lazy { DetailAdapter(mainViewModel.loadData()) }
-
-                {
-
-                }
 
         }
+
 
         sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
         avatar = findViewById(R.id.avatar)
@@ -140,7 +135,7 @@ class MainActivity : AppCompatActivity() {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction: FragmentTransaction =
         fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.framelayout, fragment)
+        fragmentTransaction.replace(R.id.details, fragment)
         fragmentTransaction.commit()
     }
 }

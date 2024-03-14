@@ -21,8 +21,7 @@ class DetailAdapter(private val items: List<DetailItem>):
         return ViewHolder(view)
     }
 
-    override fun getItemCount(): Int =
-        items.size
+    override fun getItemCount(): Int = items.size
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
