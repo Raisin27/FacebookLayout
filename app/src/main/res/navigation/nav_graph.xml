@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/friendsFragment">
+
+    <fragment
+        android:id="@+id/friendsFragment"
+        android:name="com.example.facebooklayout.fragment.FriendsFragment"
+        android:label="FriendsFragment" >
+        <action
+            android:id="@+id/action_friendsFragment_to_newFriendFragment"
+            app:destination="@id/newFriendFragment" />
+        <action
+            android:id="@+id/action_friendsFragment_to_updateFriendFragment"
+            app:destination="@id/updateFriendFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/updateFriendFragment"
+        android:name="com.example.facebooklayout.fragment.UpdateFriendFragment"
+        android:label="fragment_update_friend"
+        tools:layout="@layout/fragment_update_friend" >
+        <action
+            android:id="@+id/action_updateFriendFragment_to_friendsFragment"
+            app:destination="@id/friendsFragment" />
+        <argument
+            android:name="friend"
+            app:argType="com.example.facebooklayout.Model.Friend"
+            app:nullable="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/newFriendFragment"
+        android:name="com.example.facebooklayout.fragment.NewFriendFragment"
+        android:label="fragment_new_friend"
+        tools:layout="@layout/fragment_new_friend" >
+        <action
+            android:id="@+id/action_newFriendFragment_to_friendsFragment"
+            app:destination="@id/friendsFragment" />
+    </fragment>
+</navigation>

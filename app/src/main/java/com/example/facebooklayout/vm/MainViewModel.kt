@@ -4,12 +4,15 @@ import androidx.databinding.Bindable
 import androidx.databinding.Observable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.facebooklayout.Model.UserDAO
 import com.example.facebooklayout.Repository.MainRepository
 
-class MainViewModel(val repository: MainRepository): ViewModel(), Observable{
-    constructor(): this(MainRepository())
+class MainViewModel(val repository: MainRepository)
+    : ViewModel(), Observable{
+//    constructor(): this(MainRepository(userDAO))
 
     val detailItems  = repository.detailItems
+
     val userInfo  = repository.userInfo
 
     @Bindable
@@ -21,12 +24,14 @@ class MainViewModel(val repository: MainRepository): ViewModel(), Observable{
     @Bindable
     var avatar = MutableLiveData<Int>()
 
-    fun updateResourceId(resourceId: Int){
-        avatar.value = resourceId
-    }
+
 
     @Bindable
     var bg = MutableLiveData<Int>()
+
+    fun updateResourceId(resourceId: Int){
+        avatar.value = resourceId
+    }
     fun updateBgResourceId(resourceId: Int){
         bg.value = resourceId
     }

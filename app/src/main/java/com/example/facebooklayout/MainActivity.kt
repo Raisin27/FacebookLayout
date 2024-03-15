@@ -15,14 +15,19 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
+import com.example.facebooklayout.Model.FriendDatabase
+import com.example.facebooklayout.Model.UserDatabase
+import com.example.facebooklayout.Repository.FriendRepository
 import com.example.facebooklayout.Repository.MainRepository
 import com.example.facebooklayout.databinding.ActivityMainBinding
+import com.example.facebooklayout.fragment.FriendsFragment
 import com.example.facebooklayout.fragment.PhotoFragment
 import com.example.facebooklayout.fragment.PostFragment
 import com.example.facebooklayout.fragment.ReelFragment
+import com.example.facebooklayout.vm.FriendViewModel
+import com.example.facebooklayout.vm.FriendViewModelFactory
 import com.example.facebooklayout.vm.MainViewModel
 import com.example.facebooklayout.vm.ViewModelFactory
-import kotlinx.coroutines.coroutineScope
 
 class MainActivity : AppCompatActivity() {
     lateinit var avatar : ImageView
@@ -31,47 +36,42 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var mainViewModel: MainViewModel
 
+    lateinit var friendViewModel : FriendViewModel
+
+
     private lateinit var sharedPreferences: SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        binding = ActivityMainBinding.inflate(layoutInflater)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-//        setContentView(binding.root)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        //Database
-        val factory = ViewModelFactory(MainRepository())
+        //ROOM Database
+        val dao = UserDatabase.getInstance(applicationContext).userDAO
+        val repository = MainRepository(dao)
+        val factory = ViewModelFactory(repository)
 
+        setUpFriendViewModel()
+        //viewmodel
+//        mainViewModel = ViewModelProvider(this, factory)
+//            .get(MainViewModel::class.java)
 
-        mainViewModel = ViewModelProvider(this, factory).get(MainViewModel::class.java)
         binding.detailData = mainViewModel
 
         binding.lifecycleOwner = this
-
-        mainViewModel.name.observe(this,{newName->
-            binding.userName2.text = newName
-            binding.userName1.text = newName
-        })
-
-        mainViewModel.avatar.observe(this, {resourceId->
-            binding.avatar.setImageResource(resourceId)
-        })
-
-        mainViewModel.bg.observe(this, {resourceId->
-            binding.backgroundImage.setImageResource(resourceId)
-        })
 
 
         sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
 
         avatar = findViewById(R.id.avatar)
-//        username = findViewById(R.id.userName2)
+        username = findViewById(R.id.userName2)
         bgImage = findViewById(R.id.backgroundImage)
 
+
 //        // SharedPreferences에서 name 값을 불러와서 TextView에 설정
-//        val name = sharedPreferences.getString("name", "Mark")
+        val name = sharedPreferences.getString("name", "Mark")
 //
-//        username.text = name
+        username.text = name
         avatar.setOnClickListener{
             val explicitIntent = Intent(this, AvatarActivity::class.java)
             // Lấy tên người dùng từ TextView
@@ -94,6 +94,7 @@ class MainActivity : AppCompatActivity() {
         val postBtn : Button = findViewById(R.id.postsBtn)
         val photoBtn : Button = findViewById(R.id.photosBtn)
         val reelBtn : Button = findViewById(R.id.reelsBtn)
+        val friendsBtn : Button = findViewById(R.id.friendsBtn)
         followBtn.setOnClickListener{
             if(followBtn.isActivated){
                 followBtn.isActivated = false
@@ -142,23 +143,44 @@ class MainActivity : AppCompatActivity() {
             val reelFragment : ReelFragment = ReelFragment()
             loadFragment(reelFragment)
         }
+        friendsBtn.setOnClickListener{
+            friendsBtn.isActivated = true
+            // Đặt các Button còn lại về trạng thái không được kích hoạt
+            photoBtn.isActivated = false
+            reelBtn.isActivated = false
+            postBtn.isActivated = false
+            val friendsFragment : FriendsFragment = FriendsFragment()
+            loadFragment(friendsFragment)
+        }
+
         // userName2를 클릭하고 새로운 값을 입력하면 그 값이 변경되도록 코드를 추가합니다.
-        binding.userName2.setOnClickListener {
+        username.setOnClickListener {
             val dialog = AlertDialog.Builder(this)
             val editText = EditText(this)
             dialog.setView(editText)
-//            dialog.setPositiveButton("OK") { _, _ ->
-//                val newName = editText.text.toString()
-//                username.text = newName
-//                // 새로운 이름을 SharedPreferences에 저장합니다.
-//                sharedPreferences.edit().putString("name", newName).apply()
-//            }
-//            dialog.setNegativeButton("Cancel") { dialogInterface, _ ->
-//                dialogInterface.dismiss()
-//            }
-//            dialog.show()
+            dialog.setPositiveButton("OK") { _, _ ->
+                val newName = editText.text.toString()
+                username.text = newName
+                // 새로운 이름을 SharedPreferences에 저장합니다.
+                sharedPreferences.edit().putString("name", newName).apply()
+            }
+            dialog.setNegativeButton("Cancel") { dialogInterface, _ ->
+                dialogInterface.dismiss()
+            }
+            dialog.show()
         }
     }
+
+    private fun setUpFriendViewModel() {
+        val friendRepository = FriendRepository(FriendDatabase(this))
+        val viewModelProviderFactory = FriendViewModelFactory(application, friendRepository)
+
+        friendViewModel = ViewModelProvider(
+            this,
+            viewModelProviderFactory
+        ).get(FriendViewModel::class.java)
+    }
+
     fun loadFragment(fragment: Fragment){
         val fragmentManager = supportFragmentManager
         val fragmentTransaction: FragmentTransaction =

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
         <data>
+            <import type="com.example.facebooklayout.R"/>
+
             <variable
                 name="detailData"
                 type="com.example.facebooklayout.vm.MainViewModel" />
@@ -65,7 +67,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="12"
-                    android:text="@{detailData.name}"
+                    android:text="Mark"
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -104,7 +106,7 @@
                         android:id="@+id/backgroundImage"
                         android:layout_width="match_parent"
                         android:layout_height="190dp"
-                        app:imageResource="@{detailData.bg}" />
+                        android:src="@drawable/background" />
 
                     <LinearLayout
                         android:id="@+id/llv_Avatar"
@@ -131,7 +133,8 @@
                                 android:id="@+id/avatar"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                app:imageResource="@{detailData.avatar}" />
+                                android:src="@drawable/markzuckerberg"
+                                />
 
                         </androidx.cardview.widget.CardView>
 
@@ -168,7 +171,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="13"
-                        android:text="@{detailData.name}"
+                        android:text="Mark"
                         android:textColor="@color/textWhite"
                         android:textSize="24sp"
                         android:textStyle="bold"
@@ -181,6 +184,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="2"
                         android:src="@drawable/approval"
+                        app:layout_constraintLeft_toRightOf="@+id/userName2"
                         app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
                     <Space
@@ -366,7 +370,23 @@
                 <Space
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="12" />
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/friendsBtn"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="10"
+                    android:background="@drawable/button3_bg"
+                    android:scaleType="center"
+                    android:text="Friends"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text_color_selector"
+                    app:layout_constraintLeft_toRightOf="@id/reelsBtn" />
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
 
             </LinearLayout>
 
@@ -417,6 +437,16 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="10dp"
                     android:layout_weight="100" />
+                
+                <androidx.fragment.app.FragmentContainerView
+                    android:id="@+id/fragmentContainerView"
+                    android:name="androidx.navigation.fragment.NavHostFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:defaultNavHost="true"
+                    app:navGraph="@navigation/nav_graph"
+
+                    />
             </LinearLayout>
 
             <Space

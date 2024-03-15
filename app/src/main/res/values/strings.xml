@@ -3,5 +3,9 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_details">Details</string>
+    <string name="friend_fragment">Friends</string>
+    <string name="new_friend">New friend</string>
+    <string name="update_friend">Update</string>
+
 
 </resources>
