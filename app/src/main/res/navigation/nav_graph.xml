@@ -11,10 +11,28 @@
         android:label="FriendsFragment" >
         <action
             android:id="@+id/action_friendsFragment_to_newFriendFragment"
-            app:destination="@id/newFriendFragment" />
+            app:destination="@id/newFriendFragment">
+<!--            <argument-->
+<!--                android:name="itemId"-->
+<!--                app:argType="string" />-->
+<!--            <argument-->
+<!--                android:name="name"-->
+<!--                app:argType="string" />-->
+        </action>
         <action
             android:id="@+id/action_friendsFragment_to_updateFriendFragment"
-            app:destination="@id/updateFriendFragment" />
+            app:destination="@id/updateFriendFragment" >
+            <argument
+                android:name="friend"
+                app:argType="com.example.facebooklayout.Model.Friend"
+                app:nullable="true" />
+<!--            <argument-->
+<!--                android:name="itemId"-->
+<!--                app:argType="string" />-->
+<!--            <argument-->
+<!--                android:name="name"-->
+<!--                app:argType="string" />-->
+        </action>
     </fragment>
     <fragment
         android:id="@+id/updateFriendFragment"
@@ -23,11 +41,21 @@
         tools:layout="@layout/fragment_update_friend" >
         <action
             android:id="@+id/action_updateFriendFragment_to_friendsFragment"
-            app:destination="@id/friendsFragment" />
+            app:destination="@id/friendsFragment"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/friendsFragment"/>
         <argument
             android:name="friend"
             app:argType="com.example.facebooklayout.Model.Friend"
             app:nullable="true" />
+<!--            <argument-->
+<!--                android:name="itemId"-->
+<!--                app:argType="string"-->
+<!--                android:defaultValue=""/>-->
+<!--            <argument-->
+<!--                android:name="name"-->
+<!--                app:argType="string"-->
+<!--                android:defaultValue=""/>-->
     </fragment>
     <fragment
         android:id="@+id/newFriendFragment"
@@ -36,6 +64,23 @@
         tools:layout="@layout/fragment_new_friend" >
         <action
             android:id="@+id/action_newFriendFragment_to_friendsFragment"
-            app:destination="@id/friendsFragment" />
+            app:destination="@id/friendsFragment"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/friendsFragment"/>
     </fragment>
+<!--    <fragment-->
+<!--        android:id="@+id/postFragment"-->
+<!--        android:name="com.example.facebooklayout.fragment.PostFragment"-->
+<!--        android:label="fragment_post"-->
+<!--        tools:layout="@layout/fragment_post" />-->
+<!--    <fragment-->
+<!--        android:id="@+id/reelFragment"-->
+<!--        android:name="com.example.facebooklayout.fragment.ReelFragment"-->
+<!--        android:label="fragment_reel"-->
+<!--        tools:layout="@layout/fragment_reel" />-->
+<!--    <fragment-->
+<!--        android:id="@+id/photoFragment"-->
+<!--        android:name="com.example.facebooklayout.fragment.PhotoFragment"-->
+<!--        android:label="fragment_photo"-->
+<!--        tools:layout="@layout/fragment_photo" />-->
 </navigation>

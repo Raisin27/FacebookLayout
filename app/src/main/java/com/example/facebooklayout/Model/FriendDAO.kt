@@ -20,9 +20,9 @@ interface FriendDAO {
     @Delete
     suspend fun deleteFriend(friend: Friend)
 
-    @Query("SELECT * FROM friends ORDER BY id DESC")
+    @Query("SELECT * FROM friends_table")
     fun getAllFriends(): LiveData<List<Friend>>
 
-    @Query("SELECT * FROM friends WHERE friendName LIKE :query")
-    fun searchFriend(query: String?): LiveData<List<Friend>>
+//    @Query("SELECT * FROM friends WHERE friendName LIKE :query")
+//    fun searchFriend(query: String?): LiveData<List<Friend>>
 }

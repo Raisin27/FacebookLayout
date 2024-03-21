@@ -1,6 +1,7 @@
 package com.example.facebooklayout.fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
@@ -8,116 +9,97 @@ import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.facebooklayout.Adapter.FriendAdapter
 import com.example.facebooklayout.MainActivity
 import com.example.facebooklayout.Model.Friend
+import com.example.facebooklayout.Model.FriendDAO
+import com.example.facebooklayout.Model.FriendDatabase
+import com.example.facebooklayout.Model.UserDatabase
 import com.example.facebooklayout.R
+import com.example.facebooklayout.Repository.FriendRepository
+import com.example.facebooklayout.Repository.MainRepository
 import com.example.facebooklayout.databinding.FragmentFriendsBinding
 import com.example.facebooklayout.vm.FriendViewModel
+import com.example.facebooklayout.vm.FriendViewModelFactory
+import com.example.facebooklayout.vm.ViewModelFactory
 
-class FriendsFragment : Fragment(R.layout.fragment_friends) , SearchView.OnQueryTextListener{
+class FriendsFragment : Fragment(R.layout.fragment_friends){
 
-    private var _binding: FragmentFriendsBinding? = null
-    private val binding get() = _binding!!
+    lateinit var _binding: FragmentFriendsBinding
+
+    private val binding get() = _binding
 
     private lateinit var friendsViewModel : FriendViewModel
     private lateinit var friendAdapter: FriendAdapter
-
-
+    var dummyList = listOf<Friend>()
+//    private val args: UpdateFriendFragmentArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
     }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentFriendsBinding.inflate(inflater, container, false)
+        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_friends, container, false)
 
-        return binding.root
+        val dao = FriendDatabase.getInstance(requireContext()).friendDAO()
+        val repository = FriendRepository(dao)
+        val factory = FriendViewModelFactory(repository)
 
-    }
+        friendsViewModel = ViewModelProvider(this, factory)
+            .get(FriendViewModel::class.java)
+//        val clickListener: (Friend) -> Unit = { friend ->
+//            // Handle click action here, for example, navigate to another fragment
+//            val id = friend.id
+//            val name = friend.friendName
+//            val action =
+//                FriendsFragmentDirections.actionFriendsFragmentToUpdateFriendFragment(id, name)
+//
+//            view?.findNavController()?.navigate(action)
+//        }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        friendsViewModel = (activity as MainActivity).friendViewModel
 
-        setUpRecyclerView()
+
+        friendAdapter = FriendAdapter(dummyList)
+
+        binding.rcvFriends.layoutManager = LinearLayoutManager(requireContext())
+
+        friendsViewModel.friends.observe(viewLifecycleOwner, Observer {
+            friendAdapter = FriendAdapter(it)
+            binding.rcvFriends.adapter = friendAdapter
+        })
+
         binding.btnAddFriend.setOnClickListener{
             it.findNavController().navigate(
                 R.id.action_friendsFragment_to_newFriendFragment
             )
         }
 
+        return binding.root
 
     }
 
-    private fun setUpRecyclerView() {
-        friendAdapter = FriendAdapter()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        binding.rcvFriends.apply{
-            layoutManager = LinearLayoutManager(
-                requireContext()
-            )
-            adapter = friendAdapter
-        }
-        activity?.let {
-            friendsViewModel.getAllFriends().observe(
-                viewLifecycleOwner,{
-                    friend-> friendAdapter.differ.submitList(friend)
-                    updateUI(friend)
-                }
-            )
-        }
+        super.onViewCreated(view, savedInstanceState)
+
 
     }
 
-    private fun updateUI(friend: List<Friend>?){
-        if(friend!= null && friend.isNotEmpty()){
-            binding.cardView.visibility = View.GONE
-            binding.rcvFriends.visibility = View.VISIBLE
-        }
-        else{
-            binding.cardView.visibility = View.VISIBLE
-            binding.rcvFriends.visibility = View.GONE
-        }
 
-    }
 
-//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-//        super.onCreateOptionsMenu(menu, inflater)
-//        menu.clear()
-//        inflater.inflate(R.menu.home_menu, menu)...
-
-//    val mMenuSearch = menu.findItem(R.id.menu_search).actionView as
+//    override fun onDestroy() {
+//        super.onDestroy()
+//        _binding = null
 //    }
-
-    override fun onQueryTextSubmit(query: String?): Boolean {
-//        searchFriend(query)
-        return false
-    }
-
-    override fun onQueryTextChange(newText: String?): Boolean {
-//        if(newText != null){
-//            searchFriend(newText)
-//        }
-        return true
-    }
-//    private fun searchFriend(query:String?){
-//        val searchQuery = "%$query"
-//        friendsViewModel.searchFriend(query)
-//
-//    }
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-    }
-
-
 }

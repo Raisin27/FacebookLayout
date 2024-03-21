@@ -44,7 +44,7 @@ android {
 }
 
 dependencies {
-
+    implementation("androidx.appcompat:appcompat:1.2.0")
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
     val room_version = "2.6.1"
@@ -62,7 +62,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
     // LiveData
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version")
-
+    //Data binding
 
     //lifecycle-aware
     implementation("androidx.fragment:fragment-ktx:1.6.1")

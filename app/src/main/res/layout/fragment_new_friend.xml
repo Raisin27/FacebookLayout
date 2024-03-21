@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="friendViewModel"
+            type="com.example.facebooklayout.vm.FriendViewModel" />
+    </data>
+
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -6,7 +13,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.NewFriendFragment"
     android:background="@color/bgBlack">
-
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnSaveFriend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="350dp"
+        android:backgroundTint="@color/button2"
+        android:clickable="true"
+        app:borderWidth="0dp"
+        app:fabSize="mini"
+        app:srcCompat="@drawable/ic_done" />
 
     <TextView
         android:layout_width="match_parent"
@@ -54,13 +70,15 @@
                     android:layout_height="match_parent"
                     android:layout_weight="20"
                     android:inputType="text"
-                    android:text="Friend's name"
+                    android:hint="Input friend's name here"
+                    android:textColorHint="@color/textWhite"
+                    android:text="@={friendViewModel.friendName}"
                     android:textColor="@color/textWhite"/>
 
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" />
+<!--                <Space-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_weight="1" />-->
 
 
             </LinearLayout>
@@ -69,45 +87,46 @@
                 android:layout_width="match_parent"
                 android:layout_height="10dp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:orientation="horizontal">
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="60dp"-->
+<!--                android:orientation="horizontal">-->
 
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" />
+<!--                <Space-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_weight="1" />-->
 
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:src="@drawable/ic_person"
-                    />
+<!--                <ImageView-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_weight="3"-->
+<!--                    android:src="@drawable/ic_person"-->
+<!--                    />-->
 
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" />
+<!--                <Space-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_weight="1" />-->
 
-                <EditText
-                    android:id="@+id/ed_AvatarResource"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="10"
-                    android:ems="10"
-                    android:inputType="text"
-                    android:text="Image resource"
-                    android:textColor="@color/textWhite"/>
+<!--                <EditText-->
+<!--                    android:id="@+id/ed_AvatarResource"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_weight="10"-->
+<!--                    android:ems="10"-->
+<!--                    android:inputType="text"-->
+<!--                    android:text="Image resource"-->
+<!--                    android:textColor="@color/textWhite"/>-->
 
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" />
-            </LinearLayout>
+<!--                <Space-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_weight="1" />-->
+<!--            </LinearLayout>-->
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
 
 </FrameLayout>
+</layout>
